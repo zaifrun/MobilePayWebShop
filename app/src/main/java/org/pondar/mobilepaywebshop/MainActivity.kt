@@ -3,6 +3,7 @@ package org.pondar.mobilepaywebshop
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import dk.mobilepay.sdk.Country
 import dk.mobilepay.sdk.MobilePay
@@ -17,15 +18,18 @@ import java.math.BigDecimal
 class MainActivity : AppCompatActivity() {
 
     private val MOBILEPAY_PAYMENT_REQUEST_CODE = 1337
-    private var isMobilePayInstalled = MobilePay.getInstance().isMobilePayInstalled(applicationContext)
+    private var isMobilePayInstalled = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //Using mobile pay test merchant code!
-
         MobilePay.getInstance().init("APPDK0000000000", Country.DENMARK)
+
+        //Using mobile pay test merchant code!
+        isMobilePayInstalled = MobilePay.getInstance().isMobilePayInstalled(applicationContext)
+
+
 
         buy_button.setOnClickListener { placeOrder(50.0,"my_order_id_string") }
 
@@ -63,10 +67,13 @@ class MainActivity : AppCompatActivity() {
                 override fun onSuccess(result: SuccessResult?) {
                     // The payment succeeded - you can deliver the product.
                     Log.d("IntentResult","Success")
+                    Toast.makeText(applicationContext,"Purchase successfull!",Toast.LENGTH_LONG).show()
                 }
 
                 override fun onFailure(result: FailureResult?) {
                     Log.d("IntentResult","failure: ${result?.errorMessage}")
+                    Toast.makeText(applicationContext,"failure: ${result?.errorMessage}",Toast.LENGTH_LONG).show()
+
 
                     // The payment failed - show an appropriate error message to the user. Consult the MobilePay class documentation for possible error codes.
                 }
@@ -74,6 +81,8 @@ class MainActivity : AppCompatActivity() {
                 override fun onCancel(orderId: String?) {
                     // The payment was cancelled.
                     Log.d("IntentResult","Buy was cancelled by user")
+                    Toast.makeText(applicationContext,"Buy was cancelled by user",Toast.LENGTH_LONG).show()
+
                 }
             })
         }
