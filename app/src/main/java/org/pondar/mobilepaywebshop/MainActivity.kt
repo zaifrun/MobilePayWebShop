@@ -24,16 +24,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        MobilePay.getInstance().init("APPDK0000000000", Country.DENMARK)
 
         //Using mobile pay test merchant code!
+        //To receive real purchases you need to register as a merchant at mobile pay
+        MobilePay.getInstance().init("APPDK0000000000", Country.DENMARK)
+
         isMobilePayInstalled = MobilePay.getInstance().isMobilePayInstalled(applicationContext)
 
-
-
         buy_button.setOnClickListener { placeOrder(50.0,"my_order_id_string") }
-
-
 
     }
 
