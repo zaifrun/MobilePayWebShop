@@ -2,4 +2,5 @@
     <string name="app_name">MobilePayWebShop</string>
     <string name="price_is_50_kr">Price is 50 kr</string>
     <string name="buy">Buy!</string>
+    <string name="status">Status: %1$s</string>
 </resources>

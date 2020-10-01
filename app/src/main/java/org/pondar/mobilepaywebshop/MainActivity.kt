@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        status.text= getString(R.string.status,"")
         //Using mobile pay test merchant code!
         //To receive real purchases you need to register as a merchant at mobile pay
         MobilePay.getInstance().init("APPDK0000000000", Country.DENMARK)
@@ -65,12 +66,15 @@ class MainActivity : AppCompatActivity() {
                 override fun onSuccess(result: SuccessResult?) {
                     // The payment succeeded - you can deliver the product.
                     Log.d("IntentResult","Success")
+                    status.text= getString(R.string.status,"Item bought!")
+
                     Toast.makeText(applicationContext,"Purchase successfull!",Toast.LENGTH_LONG).show()
                 }
 
                 override fun onFailure(result: FailureResult?) {
                     Log.d("IntentResult","failure: ${result?.errorMessage}")
                     Toast.makeText(applicationContext,"failure: ${result?.errorMessage}",Toast.LENGTH_LONG).show()
+                    status.text= getString(R.string.status,"Payment failure")
 
 
                     // The payment failed - show an appropriate error message to the user. Consult the MobilePay class documentation for possible error codes.
@@ -79,6 +83,8 @@ class MainActivity : AppCompatActivity() {
                 override fun onCancel(orderId: String?) {
                     // The payment was cancelled.
                     Log.d("IntentResult","Buy was cancelled by user")
+                    status.text= getString(R.string.status,"Cancelled by user")
+
                     Toast.makeText(applicationContext,"Buy was cancelled by user",Toast.LENGTH_LONG).show()
 
                 }
