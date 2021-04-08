@@ -12,6 +12,7 @@ import dk.mobilepay.sdk.model.FailureResult
 import dk.mobilepay.sdk.model.Payment
 import dk.mobilepay.sdk.model.SuccessResult
 import kotlinx.android.synthetic.main.activity_main.*
+import java.lang.Exception
 import java.math.BigDecimal
 
 
@@ -28,10 +29,25 @@ class MainActivity : AppCompatActivity() {
         status.text= getString(R.string.status,"")
         //Using mobile pay test merchant code!
         //To receive real purchases you need to register as a merchant at mobile pay
-        MobilePay.getInstance().init("APPDK0000000000", Country.DENMARK)
 
-        isMobilePayInstalled = MobilePay.getInstance().isMobilePayInstalled(applicationContext)
+        try {
+            MobilePay.getInstance().init("APPDK0000000000", Country.DENMARK)
 
+            isMobilePayInstalled =
+                MobilePay.getInstance().isMobilePayInstalled(applicationContext, Country.DENMARK)
+        }
+        catch (e : Exception)
+        {
+            Log.d("MobilePay", "Exception : ${e.message.toString()}")
+        }
+
+        if (isMobilePayInstalled)
+            Log.d("MobilePay"," is installed")
+        else
+            Log.d("MobilePay"," is NOT installed")
+
+
+        isMobilePayInstalled = true
         buy_button.setOnClickListener { placeOrder(50.0,"my_order_id_string") }
 
     }
