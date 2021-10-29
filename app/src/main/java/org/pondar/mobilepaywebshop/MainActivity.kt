@@ -12,6 +12,7 @@ import dk.mobilepay.sdk.model.FailureResult
 import dk.mobilepay.sdk.model.Payment
 import dk.mobilepay.sdk.model.SuccessResult
 import kotlinx.android.synthetic.main.activity_main.*
+import org.pondar.mobilepaywebshop.databinding.ActivityMainBinding
 import java.lang.Exception
 import java.math.BigDecimal
 
@@ -21,12 +22,18 @@ class MainActivity : AppCompatActivity() {
     private val MOBILEPAY_PAYMENT_REQUEST_CODE = 1337
     private var isMobilePayInstalled = false
 
+    lateinit var binding : ActivityMainBinding
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        status.text= getString(R.string.status,"")
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+        binding.status.text= getString(R.string.status,"")
         //Using mobile pay test merchant code!
         //To receive real purchases you need to register as a merchant at mobile pay
 
@@ -48,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
 
         isMobilePayInstalled = true
-        buy_button.setOnClickListener { placeOrder(50.0,"my_order_id_string") }
+        binding.buyButton.setOnClickListener { placeOrder(50.0,"my_order_id_string") }
 
     }
 
@@ -82,7 +89,7 @@ class MainActivity : AppCompatActivity() {
                 override fun onSuccess(result: SuccessResult?) {
                     // The payment succeeded - you can deliver the product.
                     Log.d("IntentResult","Success")
-                    status.text= getString(R.string.status,"Item bought!")
+                    binding.status.text= getString(R.string.status,"Item bought!")
 
                     Toast.makeText(applicationContext,"Purchase successfull!",Toast.LENGTH_LONG).show()
                 }
@@ -90,7 +97,7 @@ class MainActivity : AppCompatActivity() {
                 override fun onFailure(result: FailureResult?) {
                     Log.d("IntentResult","failure: ${result?.errorMessage}")
                     Toast.makeText(applicationContext,"failure: ${result?.errorMessage}",Toast.LENGTH_LONG).show()
-                    status.text= getString(R.string.status,"Payment failure")
+                    binding.status.text= getString(R.string.status,"Payment failure")
 
 
                     // The payment failed - show an appropriate error message to the user. Consult the MobilePay class documentation for possible error codes.
@@ -99,7 +106,7 @@ class MainActivity : AppCompatActivity() {
                 override fun onCancel(orderId: String?) {
                     // The payment was cancelled.
                     Log.d("IntentResult","Buy was cancelled by user")
-                    status.text= getString(R.string.status,"Cancelled by user")
+                    binding.status.text= getString(R.string.status,"Cancelled by user")
 
                     Toast.makeText(applicationContext,"Buy was cancelled by user",Toast.LENGTH_LONG).show()
 
